@@ -1,32 +1,18 @@
 const express = require("express");
+const connectDB = require("./config/database");
+
 const app = express();
-const mongoose = require("mongoose");
+app.use(express.json());
 
-const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
+// データベース接続
+connectDB();
 
-// MongoDBに接続
-mongoose
-  .connect("mongodb://127.0.0.1:27017/Recipease", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-  });
+const swaggerRouter = require("./routes/swagger");
+app.use(swaggerRouter);
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// ルートエンドポイントの設定
-app.get("/", (req, res) => {
-  res.send("Hello Express!");
-});
+const PORT = 3000;
 
 // サーバーの起動
-const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
