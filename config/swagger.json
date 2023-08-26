@@ -1,23 +1,363 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Express API with Swagger",
-    "description": "API documentation for Express app with Swagger",
-    "version": "1.0.0"
+    "title": "Recipease",
+    "description": "Recipease用API",
+    "version": "0.0.1"
   },
+  "servers": [
+    {
+      "url": "http://localhost:3000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "ingredient",
+      "description": "Operations about ingredient"
+    },
+    {
+      "name": "recipe",
+      "description": "Operations about recipe"
+    }
+  ],
   "paths": {
-    "/": {
+    "/ingredients": {
       "get": {
-        "summary": "Get a greeting",
+        "tags": ["ingredient"],
+        "summary": "Get ingredients",
+        "description": "",
+        "operationId": "getIngredients",
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "Successful response",
-            "schema": {
-              "type": "string"
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ingredient"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ingredient"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ingredient not found"
+          }
+        }
+      },
+      "post": {
+        "tags": ["ingredient"],
+        "summary": "Create ingredient",
+        "description": "This can only be done by the logged in ingredient.",
+        "operationId": "createIngredient",
+        "requestBody": {
+          "description": "Created ingredient object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ingredient"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Ingredient"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Ingredient"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ingredient"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ingredient"
+                }
+              }
             }
           }
         }
       }
+    },
+    "/ingredients/{ingredientId}": {
+      "patch": {
+        "tags": ["ingredient"],
+        "summary": "Update ingredient",
+        "description": "This can only be done by the logged in ingredient.",
+        "operationId": "updateIngredient",
+        "parameters": [
+          {
+            "name": "ingredientId",
+            "in": "path",
+            "description": "id that need to be updated",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent ingredient in the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ingredient"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Ingredient"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Ingredient"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["ingredient"],
+        "summary": "Delete ingredient",
+        "description": "This can only be done by the logged in ingredient.",
+        "operationId": "deleteIngredient",
+        "parameters": [
+          {
+            "name": "ingredientId",
+            "in": "path",
+            "description": "The name that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ingredientname supplied"
+          },
+          "404": {
+            "description": "Ingredient not found"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": ["recipe"],
+        "summary": "Get recipes",
+        "description": "",
+        "operationId": "getRecipes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found"
+          }
+        }
+      },
+      "post": {
+        "tags": ["recipe"],
+        "summary": "Create recipe",
+        "description": "This can only be done by the logged in recipe.",
+        "operationId": "createRecipe",
+        "requestBody": {
+          "description": "Created recipe object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{recipeId}": {
+      "patch": {
+        "tags": ["recipe"],
+        "summary": "Update recipe",
+        "description": "This can only be done by the logged in recipe.",
+        "operationId": "updateRecipe",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "id that need to be updated",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent recipe in the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["recipe"],
+        "summary": "Delete recipe",
+        "description": "This can only be done by the logged in recipe.",
+        "operationId": "deleteRecipe",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "The name that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid recipename supplied"
+          },
+          "404": {
+            "description": "Recipe not found"
+          }
+        }
+      }
     }
+  },
+  "components": {
+    "schemas": {
+      "Ingredient": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "example": "たまねぎ"
+          },
+
+          "category": {
+            "type": "string",
+            "example": "野菜"
+          }
+        },
+        "xml": {
+          "name": "ingredient"
+        }
+      },
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "example": "トマトスパゲティ"
+          },
+          "type": {
+            "type": "string",
+            "example": "主菜"
+          },
+          "genre": {
+            "type": "string",
+            "example": "パスタ"
+          },
+          "level": {
+            "type": "string",
+            "example": "低"
+          }
+        },
+        "xml": {
+          "name": "ingredient"
+        }
+      }
+    },
+    "requestBodies": {}
   }
 }

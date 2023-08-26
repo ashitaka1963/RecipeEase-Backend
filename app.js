@@ -10,6 +10,12 @@ connectDB();
 const swaggerRouter = require("./routes/swagger");
 app.use(swaggerRouter);
 
+const ingredientRoutes = require("./routes/ingredientRoutes");
+app.use(ingredientRoutes);
+
+const recipeRoutes = require("./routes/recipeRoutes");
+app.use(recipeRoutes);
+
 const PORT = 3000;
 
 // サーバーの起動
