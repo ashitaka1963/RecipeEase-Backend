@@ -5,6 +5,7 @@ const ingredientSchema = new mongoose.Schema(
     // _id: Number,
     name: String,
     category: String,
+    unit: String,
   },
   { timestamps: true }
 );

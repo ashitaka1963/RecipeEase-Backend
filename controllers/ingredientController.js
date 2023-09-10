@@ -15,12 +15,39 @@ exports.getIngredient = async (req, res) => {
 // 材料作成
 exports.createIngredient = async (req, res) => {
   try {
-    const { name, category } = req.body;
-    const newIngredient = new Ingredient({
-      name,
-      category,
-    });
-    await newIngredient.save();
+    // 重複登録チェックのため、材料一覧を取得
+    const ingredients = await Ingredient.find();
+
+    let newIngredient = null;
+    if (req.body.hasOwnProperty("_rawValue")) {
+      for (const ingredient of req.body._rawValue) {
+        const { name, category, unit } = ingredient;
+
+        if (duplicateCheck(ingredients, name)) {
+          return res.status(400).json({ error: `${name}は既に存在します。` });
+        }
+
+        newIngredient = new Ingredient({
+          name,
+          category,
+          unit,
+        });
+        await newIngredient.save();
+      }
+    } else {
+      const { name, category, unit } = req.body;
+
+      if (duplicateCheck(ingredients, name)) {
+        return res.status(400).json({ error: `${name}は既に存在します。` });
+      }
+
+      newIngredient = new Ingredient({
+        name,
+        category,
+        unit,
+      });
+      await newIngredient.save();
+    }
 
     res.json({
       message: `${target}が登録されました。`,
@@ -30,6 +57,13 @@ exports.createIngredient = async (req, res) => {
     res.status(500).json({ error: `${target}の登録に失敗しました。` });
   }
 };
+
+function duplicateCheck(items, addItemName) {
+  if (items.some((item) => item.name === addItemName)) {
+    return true;
+  }
+  return false;
+}
 
 // 材料更新
 exports.updateIngredient = async (req, res) => {

@@ -15,14 +15,30 @@ exports.getRecipe = async (req, res) => {
 // レシピ作成
 exports.createRecipe = async (req, res) => {
   try {
-    const { name, type, genre, level } = req.body;
-    const newRecipe = new Recipe({
-      name,
-      type,
-      genre,
-      level,
-    });
-    await newRecipe.save();
+    let newRecipe = null;
+    if (req.body.hasOwnProperty("_rawValue")) {
+      for (const recipe of req.body._rawValue) {
+        const { name, type, genre, level } = recipe;
+
+        newRecipe = new Recipe({
+          name,
+          type,
+          genre,
+          level,
+        });
+        await newRecipe.save();
+      }
+    } else {
+      const { name, type, genre, level } = req.body;
+
+      newRecipe = new Recipe({
+        name,
+        type,
+        genre,
+        level,
+      });
+      await newRecipe.save();
+    }
 
     res.json({
       message: `${target}が登録されました。`,
